@@ -1,52 +1,44 @@
 #include <stdio.h>
 
+int getWidth(int n)
+{
+    int result = 2; // 양 옆 기본 cm
+    while (n)
+    {
+        int temp = n % 10;
+        switch (temp)
+        {
+        case 1:
+            result += 2;
+            break;
+        case 0:
+            result += 4;
+            break;
+        default:
+            result += 3;
+            break;
+        }
+        n /= 10;
+        if (n)
+        {
+            result++;
+        }
+    }
+    return result;
+}
+
 int main()
 {
-    char list[4];
-    int i = 0, result = 0, length = 0;
-    scanf("%s", list);
-    if (list[0] == '0')
+    while (1)
     {
-        return 0;
-    }
-    for (i = 0; i < 4; i++)
-    {
-        if (list[i] == '\0')
+        int num = 0;
+        scanf("%d", &num);
+        if (num == 0)
         {
             break;
         }
-        else
-        {
-            length += 1;
-        }
-        if (list[i] == '0')
-        {
-            result += 4;
-        }
-        else if (list[i] == '1')
-        {
-            result += 2;
-        }
-        else
-        {
-            result += 3;
-        }
+        printf("%d\n", getWidth(num));
     }
-    switch (length)
-    {
-    case 1:
-        result += 2;
-        break;
-    case 2:
-        result += 3;
-        break;
-    case 3:
-        result += 4;
-        break;
-    case 4:
-        result += 5;
-        break;
-    }
-    printf("%d\n", result);
+
     return 0;
 }
