@@ -23,6 +23,7 @@ int compare(Country c1, Country c2)
         // 금, 은메달 수가 모두 같으면, 동메달 수가 더 많은 나라
         if (c1.sliver == c2.sliver)
         {
+            // 금,은,동메달 수가 전부 같으면 k번째 나라가 먼저 오도록 정렬
             if (c1.bronze == c2.bronze)
             {
                 return c1.countryName == k;
