@@ -8,8 +8,10 @@
 #define MAX 1000
 using namespace std;
 
-int board[MAX][MAX];
-int dist[MAX][MAX];
+int board[MAX][MAX] = {
+    0,
+};
+int dist[MAX][MAX] = {0, 0};
 int dx[4] = {1, 0, -1, 0};
 int dy[4] = {0, 1, 0, -1};
 
@@ -57,7 +59,7 @@ int main()
         {
             if (dist[i][j] == -1)
             {
-                cout << '-1' << "\n";
+                cout << "-1";
                 return 0;
             }
             ans = max(ans, dist[i][j]);
