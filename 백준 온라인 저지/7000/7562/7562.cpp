@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <queue>
+#include <cstring>
 #define fastio ios::sync_with_stdio(0), cin.tie(0), cout.tie(0)
 #define MAX 300
 using namespace std;
@@ -63,14 +64,8 @@ int main()
         }
         bfs(sX, sY);
         cout << graph[dX][dY] - 1 << "\n";
-        for (int i = 0; i < MAX; i++)
-        {
-            for (int j = 0; j < MAX; j++)
-            {
-                visit[i][j] = false;
-                graph[i][j] = 0;
-            }
-        }
+        memset(graph, 0, sizeof(graph));
+        memset(visit, false, sizeof(visit));
     }
     return 0;
 }
