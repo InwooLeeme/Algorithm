@@ -17,20 +17,18 @@ int main()
 {
     fastio;
     cin >> n >> k;
-    memset(dist, -1, sizeof(dist)); // 모든 거리를 -1로 초기화 시킨다
+    memset(dist, -1, sizeof(dist));
     queue<int> Q;
     dist[n] = 0;
     Q.push(n);
     while (!Q.empty())
     {
-        int cur = Q.front(); // 현재 큐에 있는 좌표
+        int cur = Q.front();
         Q.pop();
         for (int i : {cur + 1, cur - 1, 2 * cur})
         {
             if (i < 0 || i > MAX - 1)
-            {
                 continue;
-            }
             if (dist[i] != -1)
                 continue;
             dist[i] = dist[cur] + 1;
