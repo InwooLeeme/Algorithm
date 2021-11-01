@@ -66,4 +66,5 @@
         "nim": "nim compile --verbosity:0 --hints:off --run"
     },
     "code-runner.runInTerminal": true,
+    "C_Cpp.default.cppStandard": "c++20",
 }
