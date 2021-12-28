@@ -34,11 +34,14 @@
             "source": "Git Bash"
         }
     },
+    "code-runner.runInTerminal": true,
+    "C_Cpp.default.cppStandard": "c++20",
+    "code-runner.terminalRoot": "/",
     "code-runner.executorMap": {
         "javascript": "node",
         "java": "cd $dir && javac $fileName && java $fileNameWithoutExt",
         "c": "cd $dirWithoutTrailingSlash gcc $fileName -g -o $fileNameWithoutExt && ./$fileNameWithoutExt.exe", // 데이터값 바로 입력원할때. 
-        "cpp": "cd $dir && g++ -std=c++20  -Wl, --stack=0x20000000 $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+        "cpp": "cd $dir && g++ -std=c++20 $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
         "objective-c": "cd $dir && gcc -framework Cocoa $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
         "php": "php",
         "python": "python",
@@ -75,6 +78,4 @@
         "haskell": "runhaskell",
         "nim": "nim compile --verbosity:0 --hints:off --run"
     },
-    "code-runner.runInTerminal": true,
-    "C_Cpp.default.cppStandard": "c++20",
 }
