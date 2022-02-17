@@ -16,7 +16,8 @@
         "initializer_list": "cpp",
         "regex": "cpp",
         "valarray": "cpp",
-        "rope": "cpp"
+        "rope": "cpp",
+        "*.tcc": "cpp"
     },
     "terminal.integrated.profiles.windows": {
         "PowerShell": {
