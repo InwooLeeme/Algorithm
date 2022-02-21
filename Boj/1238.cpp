@@ -1,109 +1,67 @@
 // 1238번 : 파티
-
-#include <cstdio>
-#include <iostream>
-#include <algorithm>
-#include <vector>
-#include <queue>
-#include <deque>
-#include <stack>
-#include <string>
-#include <list>
-#include <map>
-#include <set>
-#include <unordered_map>
-#include <unordered_set>
-#include <bitset>
-#include <tuple>
-#include <functional>
-#include <utility>
-#include <cmath>
-#include <cstdlib>
-#include <cstring>
-#include <complex>
-#include <cassert>
-#define X first
-#define Y second
-#define pb push_back
-#define MAX 1001
-#define INF 1e9
+#pragma GCC target("avx,avx2,fma")
+#pragma GCC optimize("Ofast")
+#pragma GCC optimize("unroll-loops")
+#include <bits/stdc++.h>
+#include <ext/rope>
 #define fastio ios::sync_with_stdio(0), cin.tie(0), cout.tie(0)
 using namespace std;
+using namespace __gnu_cxx;
+
+#define X first
+#define Y second
+#define int int64_t
+#define sz(v) (int)(v).size()
+#define all(v) (v).begin(), (v).end()
+#define rall(v) (v).rbegin(), (v).rend()
+#define Compress(v) sort(all(v)), (v).erase(unique(all(v)), (v).end())
+#define OOB(x, y) ((x) < 0 || (x) >= n || (y) < 0 || (y) >= m)
+#define IDX(v, x) (lower_bound(all(v), x) - (v).begin())
+#define debug(x) cout << (#x) << ": " << (x) << '\n'
+
 using ll = long long;
 using ull = unsigned long long;
-using dbl = double;
-using ldb = long double;
 using pii = pair<int, int>;
 using pll = pair<ll, ll>;
-using vi = vector<int>;
+using tii = tuple<int, int, int>;
+template <typename T>
+using wector = vector<vector<T>>;
 
-vector<pair<int, int>> adj[MAX]; // 노드들의 정보들을 담는 벡터
+vector<pii> adj[1001];
+int n,m,x; 
+const int INF = 1e9 + 7;
 
-int n, m, x;
-
-int dijk(int start, int end)
-{
-    vector<int> dist(MAX, INF); //최단거리를 저장하는 배열, dist배열 초기화 해준다.
-    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
-    pq.push({0, start});
-    dist[start] = 0;
-
-    while (!pq.empty())
-    {
-        int weight = pq.top().first;
-        int cur = pq.top().second;
-        pq.pop();
-
-        if (dist[cur] < weight)
-            continue;
-        if (cur == end)
-            return dist[cur];
-        for (int i = 0; i < adj[cur].size(); i++)
-        {
-            int nWeight = adj[cur][i].first;
-            int next = adj[cur][i].second;
-            if (dist[next] > nWeight + weight)
-            {
-                dist[next] = nWeight + weight;
-                pq.push({dist[next], next});
-            }
-        }
-    }
-    return INF;
+vector<int> dijk(int st){
+	vector<int> dist(n + 1, INF);
+	priority_queue<pii,vector<pii>,greater<pii>> PQ;	
+	dist[st] = 0;
+	PQ.push({dist[st], st});
+	while(!PQ.empty()){
+		auto [cost, cur] = PQ.top(); PQ.pop();
+		if(dist[cur] < cost) continue;
+		for(auto [ncost, nxt] : adj[cur]){
+			if(dist[nxt] > ncost + cost){
+				dist[nxt] = ncost + cost;
+				PQ.push({dist[nxt], nxt});
+			}
+		}
+	}
+	return dist;
 }
 
-void Input()
-{
-    cin >> n >> m >> x;
-    for (int i = 0; i < m; i++)
-    {
-        int a, b, c;
-        cin >> a >> b >> c;
-        adj[a].pb({c, b}); // 단방향임
-    }
-}
-
-void Solution()
-{
-    int ans = 0;
-    int first1 = dijk(1, x);
-    int first2 = dijk(x, 1);
-    ans = first1 + first2;
-    for (int i = 1; i <= n; i++)
-    {
-        int temp1 = dijk(i, x); // i -> x
-        int temp2 = dijk(x, i); // x -> i
-        int result = temp1 + temp2;
-        ans = max(ans, result);
-    }
-    cout << ans;
-    return;
-}
-
-int main()
-{
-    fastio;
-    Input();
-    Solution();
-    return 0;
+int32_t main(){
+	fastio;
+	cin >> n >> m >> x;
+	while(m--){
+		int a,b,c; cin >> a >> b >> c;
+		adj[a].push_back({c, b});
+	}
+	auto dist1 = dijk(x); // x -> i
+	int mx = 0;
+	for(int i = 1; i <= n; i++){
+		auto dist2 = dijk(i);
+		int t1 = dist1[i],t2 = dist2[x]; // t1 : x -> i, t2 : i -> x
+		mx = max(mx, t1 + t2);
+	}
+	cout << mx << "\n";
 }
