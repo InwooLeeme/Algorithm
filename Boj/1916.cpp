@@ -1,61 +1,55 @@
-// 1916번 : 최소비용 구하기
-// https://www.acmicpc.net/problem/1916
-
-#include <iostream>
-#include <vector>
-#include <sstream>
-#include <algorithm>
-#include <cstdio>
-#include <set>
-#include <cmath>
-#include <queue>
-#include <functional>
-#define INF 0x3f3f3f3f
-#define max 1001
+#pragma GCC target("avx,avx2,fma")
+#pragma GCC optimize("Ofast")
+#pragma GCC optimize("unroll-loops")
+#include <bits/stdc++.h>
+#include <ext/rope>
+#define fastio ios::sync_with_stdio(0), cin.tie(0), cout.tie(0)
 using namespace std;
-vector<pair<int, int>> adj[max]; // 노드들의 정보들을 담는 벡터
-vector<int> dist(max, INF);      //최단거리를 저장하는 배열, dist배열 초기화 해준다.
-int start;
-int n, m; // n : 정점의 수, m : 간선의 수
-int dest;
+using namespace __gnu_cxx;
 
-void dijkstra(int vertax)
-{
-    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
-    pq.push(make_pair(0, vertax));
-    dist[vertax] = 0;
-    while (!pq.empty())
-    {
-        int cur = pq.top().second;
-        int weight = pq.top().first;
-        pq.pop();
-        if (dist[cur] < weight)
-            continue; // pq에 넣어준 최단거리가 최근 갱신한 최단거리보다 클 경우에는 굳이 다익스트라를 할 필요 없이 넘어가주면 된다
-        //if(cur == dest) return;
-        for (int i = 0; i < adj[cur].size(); i++)
-        {
-            int next = adj[cur][i].second;
-            int nWeight = adj[cur][i].first;
-            if (dist[next] > nWeight + weight)
-            {
-                dist[next] = nWeight + weight;
-                pq.push(make_pair(dist[next], next));
-            }
-        }
-    }
-}
+#define X first
+#define Y second
+#define int int64_t
+#define sz(v) (int)(v).size()
+#define all(v) (v).begin(), (v).end()
+#define rall(v) (v).rbegin(), (v).rend()
+#define Compress(v) sort(all(v)), (v).erase(unique(all(v)), (v).end())
+#define OOB(x, y) ((x) < 0 || (x) >= n || (y) < 0 || (y) >= m)
+#define IDX(v, x) (lower_bound(all(v), x) - (v).begin())
+#define debug(x) cout << (#x) << ": " << (x) << '\n'
 
-int main()
-{
-    scanf("%d%d", &n, &m);
-    for (int i = 0; i < m; i++)
-    {
-        int u, v, w;
-        cin >> u >> v >> w;
-        adj[u].push_back(make_pair(w, v));
-    }
-    scanf("%d%d", &start, &dest);
-    dijkstra(start);
-    cout << dist[dest];
-    return 0;
+using ll = long long;
+using ull = unsigned long long;
+using pii = pair<int, int>;
+using pll = pair<ll, ll>;
+using tii = tuple<int, int, int>;
+template <typename T>
+using wector = vector<vector<T>>;
+
+const int INF = int(1e9);
+vector<pii> adj[1001];
+vector<int> dist(1001, INF);
+
+int32_t main(){
+	fastio;
+	int n,m,a,b; cin >> n >> m;
+	while(m--){
+		int u,v,w; cin >> u >> v >> w;
+		adj[u].push_back({w, v});
+	}
+	cin >> a >> b;
+	priority_queue<pii,vector<pii>,greater<pii>> PQ;
+	dist[a] = 0;
+	PQ.push({dist[a], a});
+	while(!PQ.empty()){
+		auto [cost, cur] = PQ.top(); PQ.pop();
+		if(dist[cur] < cost) continue;
+		for(auto [ncost, nxt] : adj[cur]){
+			if(dist[nxt] > ncost + cost){
+				dist[nxt] = ncost + cost;
+				PQ.push({dist[nxt], nxt});
+			}
+		}
+	}
+	cout << dist[b] << "\n";
 }
