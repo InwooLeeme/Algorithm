@@ -1,28 +1,41 @@
-// 4153번 : 직각 삼각형
+// 4153번 : a^2 + b ^ 2 = c ^2
 
-#include <stdio.h>
+#pragma GCC target("avx,avx2,fma")
+#pragma GCC optimize("Ofast")
+#pragma GCC optimize("unroll-loops")
+#include <bits/stdc++.h>
+#include <ext/rope>
+#define fastio ios::sync_with_stdio(0), cin.tie(0), cout.tie(0)
+using namespace std;
+using namespace __gnu_cxx;
 
-int main()
-{
-    int a, b, c;
-    while (1)
-    {
-        scanf("%d %d %d", &a, &b, &c);
-        if (a == 0 && b == 0 && c == 0)
-        {
-            return 0;
-        }
-        a *= a;
-        b *= b;
-        c *= c;
-        if (a + b == c || a + c == b || b + c == a)
-        {
-            printf("right\n");
-        }
-        else
-        {
-            printf("wrong\n");
-        }
-    }
-    return 0;
+#define X first
+#define Y second
+#define int int64_t
+#define sz(v) (int)(v).size()
+#define all(v) (v).begin(), (v).end()
+#define rall(v) (v).rbegin(), (v).rend()
+#define Compress(v) sort(all(v)), (v).erase(unique(all(v)), (v).end())
+#define OOB(x, y) ((x) < 0 || (x) >= n || (y) < 0 || (y) >= m)
+#define IDX(v, x) (lower_bound(all(v), x) - (v).begin())
+#define debug(x) cout << (#x) << ": " << (x) << '\n'
+
+using ll = long long;
+using ull = unsigned long long;
+using pii = pair<int, int>;
+using pll = pair<ll, ll>;
+using tii = tuple<int, int, int>;
+template <typename T>
+using wector = vector<vector<T>>;
+template <typename T>
+using max_heap = priority_queue<T>;
+template <typename T>
+using min_heap = priority_queue<T, vector<T>, greater<T>>;
+
+int32_t main(){
+	fastio;
+	int a,b,c;
+	while(cin >> a >> b >> c && a != 0 && b != 0 && c != 0){
+		cout << (a*a + b * b == c * c ? "right" : "wrong") << "\n";
+	}
 }
