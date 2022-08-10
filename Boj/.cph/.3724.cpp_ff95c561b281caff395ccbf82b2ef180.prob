@@ -1,0 +1,1 @@
+{"name":"Local: 3724","url":"c:\\workspace\\NodeJs\\Algorithm\\Boj\\3724.cpp","tests":[{"id":1660114408772,"input":"2\n3 3\n20 10 30\n15 20 20\n30 30 20\n3 2\n2 -2 2\n2 -2 2","output":"3\n3"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\workspace\\NodeJs\\Algorithm\\Boj\\3724.cpp","group":"local","local":true}
