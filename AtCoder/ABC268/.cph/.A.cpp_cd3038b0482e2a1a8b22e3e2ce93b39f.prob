@@ -1,0 +1,1 @@
+{"name":"Local: A","url":"c:\\workspace\\NodeJs\\Algorithm\\AtCoder\\ABC268\\A.cpp","tests":[{"id":1663656421113,"input":"31 9 24 31 24","output":"3"},{"id":1663656430241,"input":"0 0 0 0 0","output":"1"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\workspace\\NodeJs\\Algorithm\\AtCoder\\ABC268\\A.cpp","group":"local","local":true}
