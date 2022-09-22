@@ -2,3 +2,4 @@
 .vscode
 ./Boj/gmon.out
 Boj/.cph
+Boj/*.exe
