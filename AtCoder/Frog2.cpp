@@ -93,6 +93,12 @@ const int MOD = 1e9 + 7;
 const double EPS = 1e-10;
 const int INF = 1e9 + 7;
 
+/* 
+D[i] : i번까지 이동하는 최소 비용
+DP[i] := min_{i - k <= j < i}(DP[j] + |v[i] - v[j]|)
+O(NK)
+ */
+
 int32_t main(){
     fastio;
     int n,k; sf2(n, k);
