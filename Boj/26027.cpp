@@ -14,20 +14,7 @@ using namespace __gnu_pbds;
 
 int32_t main(){
     fastio;
-    int n;
-    cin >> n;
-    int best = LLONG_MAX, retx = -1, rety = -1;
-    for (int x = 0; x <= n; ++x) {
-        int y = int(sqrt(n * n - x * x));
-        while (y * y + x * x <= n * n) {
-            ++y;
-        }
-        if (y * y + x * x < best || (y * y + x * x == best && rand() % 2 == 0)) {
-            retx = x;
-            rety = y;
-            best = y * y + x * x;
-        }
-    }
-    cout << retx << " " << -rety;
+    int R; cin >> R;
+    cout << R << ' ' << 1 << "\n";
     return 0;
 }
