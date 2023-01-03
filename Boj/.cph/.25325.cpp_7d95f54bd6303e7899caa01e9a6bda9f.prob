@@ -1,1 +1,0 @@
-{"name":"Local: 25325","url":"c:\\workspace\\NodeJs\\Algorithm\\Boj\\25325.cpp","tests":[{"id":1663312306163,"input":"4\naaa bbb ccc ddd\nbbb ddd\naaa ddd\naaa\naaa bbb","output":"aaa 3\nbbb 2\nddd 2\nccc 0"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\workspace\\NodeJs\\Algorithm\\Boj\\25325.cpp","group":"local","local":true}

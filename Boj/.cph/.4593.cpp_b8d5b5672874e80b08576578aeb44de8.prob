@@ -1,1 +1,0 @@
-{"name":"Local: 4593","url":"c:\\workspace\\NodeJs\\Algorithm\\Boj\\4593.cpp","tests":[{"id":1663803919572,"input":"RRSRS\nSRSPS\nPPP\nSSS\nSPPSRR\nPSPSRS\nE\nE","output":"P1: 1\nP2: 1\nP1: 0\nP2: 3\nP1: 2\nP2: 1"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\workspace\\NodeJs\\Algorithm\\Boj\\4593.cpp","group":"local","local":true}

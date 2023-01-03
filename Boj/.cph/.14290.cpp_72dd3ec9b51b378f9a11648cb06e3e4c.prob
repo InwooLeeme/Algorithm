@@ -1,1 +1,0 @@
-{"name":"Local: 14290","url":"c:\\workspace\\NodeJs\\Algorithm\\Boj\\14290.cpp","tests":[{"id":1663207613487,"input":"3\nBBRB\n4 8\nBBRB\n10 12\nBR\n1 1000000","output":"Case #1: 4\nCase #2: 2\nCase #3: 500000"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\workspace\\NodeJs\\Algorithm\\Boj\\14290.cpp","group":"local","local":true}
