@@ -118,111 +118,82 @@ struct SegTree{
     }
 };
 
-struct _HLD{
-    int n,cost[100'011];
-    bool vist[100'011];
-    int sz[100'011];
-    int par[100'011];
-    int top[100'011];
-    int dep[100'011];
-    int in[100'011];
-    int out[100'011];
+template<size_t _sz>
+struct HLD {
+	SegTree ST;
+	vector<int> cost, sz, dep, par, top, in, out;
+	vector<vector<pair<int, int>>> inp;
+	vector<vector<int>> adj;
+	HLD() : cost(_sz), sz(_sz), dep(_sz), par(_sz), top(_sz), in(_sz), out(_sz), inp(_sz), adj(_sz) {}
+	void add_edge(int a, int b, int c) { inp[a].push_back({ b, c }), inp[b].push_back({ a, c }); }
+	void dfs(int cur = 1, int prev = -1) {
+		for (auto [nxt, ncost] : inp[cur]) {
+			if (nxt == prev) continue;
+			adj[cur].push_back(nxt);
+			cost[nxt] = ncost;
+			dfs(nxt, cur);
+		}
+	}
+	void dfs1(int cur = 1) {
+		sz[cur] = 1;
+		for (auto& nxt : adj[cur]) {
+			dep[nxt] = dep[cur] + 1; par[nxt] = cur;
+			dfs1(nxt); sz[cur] += sz[nxt];
+			if (sz[nxt] > sz[adj[cur][0]]) swap(nxt, adj[cur][0]);
+		}
+	}
+	int temp = 0;
+	void dfs2(int cur = 1) {
+		in[cur] = ++temp;
+		for (auto nxt : adj[cur]) {
+			top[nxt] = (nxt == adj[cur][0] ? top[cur] : nxt);
+			dfs2(nxt);
+		}
+		out[cur] = temp;
+	}
+	void construct() {
+		dfs(), dfs1(), dfs2(top[1] = 1);
+		for (int i = 1; in[i]; i++) ST.Update(in[i], cost[i]);
+	}
+	int path_query(int a, int b) {
+		int ret = -INF;
+		for (; top[a] ^ top[b]; a = par[top[a]]) {
+			if (dep[top[a]] < dep[top[b]]) swap(a, b);
+			ret = max(ret, ST.Query(in[top[a]], in[a]));
+		}
+		if (dep[a] > dep[b]) swap(a, b);
+		ret = max(ret, ST.Query(in[a] + 1, in[b]));
+		return ret;
+	}
+	void node_update(int x, int val) {
+		ST.Update(in[x], val);
+	}
+};
 
-    vector<int> adj[100'011];
-    vector<pii> inp[100'011],input;
+HLD<1 << 17> hld;
 
-    void DFS(int cur = 1){
-        vist[cur] = 1;
-        for(auto& [ncost, nxt] : inp[cur]){
-            if(vist[nxt]) continue;
-            cost[nxt] = ncost;
-            adj[cur].push_back(nxt);
-            DFS(nxt);
-        }
-    }
-
-    void DFS1(int cur = 1){
-        sz[cur] = 1;
-        for(auto& nxt : adj[cur]){
-            dep[nxt] = dep[cur] + 1; par[nxt] = cur;
-            DFS1(nxt); sz[cur] += sz[nxt];
-            if(sz[nxt] > sz[adj[cur][0]]) swap(nxt, adj[cur][0]);
-        }
-    }
-    int temp;
-    void DFS2(int cur = 1){
-        in[cur] = ++temp;
-        for(auto& nxt : adj[cur]){
-            top[nxt] = (nxt == adj[cur][0] ? top[cur] : nxt);
-            DFS2(nxt);
-        }
-        out[cur] = temp;
-    }
-
-    SegTree ST;
-    void precalc(){
-        cin >> n;
-        for(int i = 1; i <= n - 1; i++){
-            int a,b,c; sf3(a, b, c);
-            input.push_back({a, b});
-            inp[a].push_back({c, b});
-            inp[b].push_back({c, a});
-        }
-        top[1] = 1;
-        DFS(); DFS1(); DFS2();
-        for(int i = 1; i <= n; i++){
-            ST.tree[ST.sz - 1 + in[i]] = cost[i];
-        }
-        ST.Construct();
-    }
-
-    void HLDUpdate(int i, int val){
-        ST.Update(in[i], val);
-    }
-
-    int LCA(int a,int b){
-        while(top[a] != top[b]){
-            if(dep[top[a]] < dep[top[b]]) swap(a, b);
-            a = par[top[a]];
-        }
-        if(dep[a] > dep[b]) swap(a, b);
-        return a;
-    }
-    // i번째 간선을 val로 바꿈
-    void Update(int i, int val){
-        auto& [a, b] = input[--i];
-        if(dep[a] < dep[b]) swap(a, b);
-        HLDUpdate(a, val);
-    }
-
-    // 경로 a - b에서 가장 가중치가 큰 간선
-    int Query(int a,int b){
-        int ret = 0;
-        while(top[a] != top[b]){
-            if(dep[top[a]] < dep[top[b]]) swap(a, b);
-            int st = top[a];
-            ret = max<int>(ret, ST.Query(in[st], in[a]));
-            a = par[st];
-        }
-        if(a == b) return ret;
-        if(dep[a] > dep[b]) swap(a, b);
-        int nxt = -1;
-        for(auto& i : adj[a]){
-            if(top[i] == top[a]) nxt = i;
-        }
-        ret = max<int>(ret, ST.Query(in[nxt], in[b]));
-        return ret;
-    }
-} HLD;
+struct Info{
+    int x,y,z;
+};
 
 int32_t main(){
     fastio;
-    HLD.precalc();
+    int n; cin >> n;
+    vector<Info> v(n - 1);
+    for(int i = 0; i < n -1; i++){
+        auto& [a, b, c] = v[i]; cin >> a >> b >> c;
+		hld.add_edge(a, b, c);
+    }
+    hld.construct();
     int q; sf1(q);
     while(q--){
-        int t,a,b; sf3(t, a, b);
-        if(t == 1) HLD.Update(a, b);
-        else pf1l(HLD.Query(a, b));
+        int t,a,b; cin >> t >> a >> b;
+        if(t == 1){
+            int t1 = v[a - 1].x,t2 = v[a - 1].y;
+            if(hld.dep[t1] < hld.dep[t2]) swap(t1, t2);
+            hld.node_update(t1, b);
+        }
+        else pf1l(hld.path_query(a, b));
     }
     return 0;
 }
