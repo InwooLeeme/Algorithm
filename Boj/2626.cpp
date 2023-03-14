@@ -1,7 +1,6 @@
 #pragma GCC target("avx,avx2,fma")
 #pragma GCC optimize("Ofast")
 #pragma GCC optimize("unroll-loops")
-#pragma GCC optimize("O3")
 #include <bits/stdc++.h>
 #include <ext/rope>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -11,123 +10,55 @@ using namespace std;
 using namespace __gnu_cxx;
 using namespace __gnu_pbds;
 
-#define X first
-#define Y second
-#define int int_fast64_t
-#define all(v) (v).begin(), (v).end()
-#define rall(v) (v).rbegin(), (v).rend()
-#define Compress(v) sort(all(v)), (v).erase(unique(all(v)), (v).end())
-#define OOB(x, y) ((x) < 0 || (x) >= n || (y) < 0 || (y) >= m)
-#define IDX(v, x) (lower_bound(all(v), x) - (v).begin())
-#define SZ(x) (x).size()
-#define sf1(a) cin >> a
-#define sf2(a, b) cin >> a >> b
-#define sf3(a, b, c) cin >> a >> b >> c
-#define sf4(a, b, c, d) cin >> a >> b >> c >> d
-#define sf5(a, b, c, d, e) cin >> a >> b >> c >> d >> e
-#define sf6(a, b, c, d, e, f) cin >> a >> b >> c >> d >> e >> f
-#define pf1(a) cout << (a) << ' '
-#define pf2(a, b) cout << (a) << ' ' << (b) << ' '
-#define pf3(a, b, c) cout << (a) << ' ' << (b) << ' ' << (c) << ' '
-#define pf4(a, b, c, d) cout << (a) << ' ' << (b) << ' ' << (c) << ' ' << (d) << ' '
-#define pf5(a, b, c, d, e) cout << (a) << ' ' << (b) << ' ' << (c) << ' ' << (d) << ' ' << (e) << ' '
-#define pf6(a, b, c, d, e, f) cout << (a) << ' ' << (b) << ' ' << (c) << ' ' << (d) << ' ' << (e) << ' ' << (f) << ' '
-#define pf0l() cout << '\n';
-#define pf1l(a) cout << (a) << '\n'
-#define pf2l(a, b) cout << (a) << ' ' << (b) << '\n'
-#define pf3l(a, b, c) cout << (a) << ' ' << (b) << ' ' << (c) << '\n'
-#define pf4l(a, b, c, d) cout << (a) << ' ' << (b) << ' ' << (c) << ' ' << (d) << '\n'
-#define pf5l(a, b, c, d, e) cout << (a) << ' ' << (b) << ' ' << (c) << ' ' << (d) << ' ' << (e) << '\n'
-#define pf6l(a, b, c, d, e, f) cout << (a) << ' ' << (b) << ' ' << (c) << ' ' << (d) << ' ' << (e) << ' ' << (f) << '\n'
-#define rep(i, a, b) for (int i = a; i < b; i++)
-#define pfvec(V)           \
-for (auto const &t : V) \
-pf1(t)
-#define pfvecl(V)           \
-for (auto const &t : V) \
-pf1(t);             \
-pf0l()
-#define rep(i, a, b) for (int i = a; i < b; i++)
-#define Init(x, y) memset(x, y, sizeof(x));
-#define EACH(x, a) for (auto& x: a)
-#define sum(a)     ( accumulate ((a).begin(), (a).end(), 0))
-#define mine(a)    (*min_element((a).begin(), (a).end()))
-#define maxe(a)    (*max_element((a).begin(), (a).end()))
+namespace SmallestEnclosingCircle{
+    struct pt{
+        long double x,y;
+        pt operator + (pt const& a){ return {x + a.x, y + a.y}; }
+        pt operator - (pt const& a){ return {x - a.x, y - a.y}; }
+        pt operator - (){ return {-x, -y}; }
+        pt operator * (long double a) { return {x * a, y * a}; }
+        pt operator / (long double a) { return {x / a, y / a}; }
+    };
+    long double inner_product(pt a, pt b){ return a.x * b.x + a.y * b.y; }
+    long double outer_product(pt a, pt b){ return a.x * b.y - a.y * b.x; }
+    long double dist(pt a,pt b) { return hypot<long double>(a.x - b.x, a.y - b.y); }
+    
+    // 외심
+    pt CenterMeter(pt a, pt b, pt c){
+        pt ab = b - a, ac = c - a;
+        auto c1 = inner_product(ab, ab) / 2, c2 = inner_product(ac, ac) / 2;
+        auto d = outer_product(ab, ac);
+        auto x = a.x + (c1 * ac.y - c2 * ab.y) / d;
+        auto y = a.y + (c2 * ab.x - c1 * ac.x) / d;
+        return {x, y};
+    }
 
-using ll  = long long;
-using ull = unsigned long long;
-using pii = pair<int, int>;
-using tii = tuple<int, int, int>;
+    struct circle{
+        pt p; double r;
+    };
 
-using vi = vector<int>;
-using vp = vector<pii>;
-using vvi = vector<vi>;
-using vvp = vector<vp>;
-template <typename T>
-using wector = vector<vector<T>>;
-template <typename T>
-using max_heap = priority_queue<T>;
-template <typename T>
-using min_heap = priority_queue<T, vector<T>, greater<T>>;
-template <typename T>
-using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
-template<typename T> T max(vector<T> v) { return *max_element(all(v)); }
-template<typename T> T min(vector<T> v) { return *min_element(all(v)); }
-
-template<typename T>
-void read(vector<T>& v){
-EACH(i,v) sf1(i);
-}
-
-template<typename T>
-void debug(T arg){
-    cout << arg << "\n";
-}
-template<typename T, typename... Types>
-void debug(T arg, Types... args) {
-    cout << arg << "\n";
-    debug(args...);
-}
-
-const int MOD = 1e9 + 7;
-const double EPS = 1e-10;
-const int INF = 0x7f7f7f7f;
-
-struct p { double x, y; };
-
-double dis(p a, p b) {
-    return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
-}
+    circle Sol(vector<pt> v){
+        pt p = { 0, 0 }; double r = 0;
+		int n = v.size();
+		for (int i = 0; i < n; i++) if (dist(p, v[i]) > r) {
+			p = v[i], r = 0;
+			for (int j = 0; j < i; j++) if (dist(p, v[j]) > r) {
+				p = (v[i] + v[j]) / 2, r = dist(p, v[i]);
+				for (int k = 0; k < j; k++) if (dist(p, v[k]) > r) {
+					p = CenterMeter(v[i], v[j], v[k]), r = dist(p, v[k]);
+				}
+			}
+		}
+		return { p, r };
+    }
+};
 
 int32_t main(){
     fastio;
-    int N; sf1(N);
-    vector<p> v(N);
-    for(int i=0; i<N; i++) sf2(v[i].x, v[i].y);
-    p cen = {0, 0};
-    double r = 0;
-    for(int i=0; i<N; i++) {
-        if(dis(cen, v[i]) <= r) continue;
-        cen = v[i], r = 0;
-        for(int j=0; j<i; j++) {
-            if(dis(cen, v[j]) <= r) continue;
-            cen = {(v[i].x + v[j].x) / 2, (v[i].y + v[j].y) / 2};
-            r = dis(cen, v[i]);
-            for(int k=0; k<j; k++) {
-                if(dis(cen, v[k]) <= r) continue;
-                cen.x = ((pow(v[j].x, 2) - pow(v[k].x, 2) + pow(v[j].y, 2) - pow(v[k].y, 2)) * (v[i].y - v[j].y)
-                         - (pow(v[j].x, 2) - pow(v[i].x, 2) + pow(v[j].y, 2) - pow(v[i].y, 2)) * (v[k].y - v[j].y))
-                         / ((v[i].x - v[j].x) * (v[k].y - v[j].y) * 2 - (v[k].x - v[j].x) * (v[i].y - v[j].y) * 2);
-                cen.y = ((pow(v[j].y, 2) - pow(v[k].y, 2) + pow(v[j].x, 2) - pow(v[k].x, 2)) * (v[i].x - v[j].x)
-                         - (pow(v[j].y, 2) - pow(v[i].y, 2) + pow(v[j].x, 2) - pow(v[i].x, 2)) * (v[k].x - v[j].x))
-                         / ((v[i]. y- v[j].y) * (v[k].x - v[j].x) * 2 - (v[k].y - v[j].y) * (v[i].x - v[j].x) * 2);
-                r = dis(cen, v[i]);
-            }
-        }
-    }
-    if(abs(cen.x) < 1e-4) cen.x = 0;
-    if(abs(cen.y) < 1e-4) cen.y = 0;
-    cout << fixed << setprecision(3) << cen.x << " " << cen.y << "\n";
-    cout << r << "\n";
+    int n; cin >> n;
+    vector<SmallestEnclosingCircle::pt> v(n);
+    for(auto& [a, b] : v) cin >> a >> b;
+    auto ret = SmallestEnclosingCircle::Sol(v);
+    cout << fixed << setprecision(3) << ret.p.x << " " << ret.p.y << "\n" << ret.r << "\n";
     return 0;
 }
