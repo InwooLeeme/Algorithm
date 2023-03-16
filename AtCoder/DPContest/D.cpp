@@ -96,30 +96,14 @@ const int MOD = 1e9 + 7;
 const double EPS = 1e-10;
 const int INF = 0x7f7f7f7f;
 
-vector<vector<int>> dp;
-
-void Sol(){
-    int N, M; cin >> N >> M;
-
-    vector<pair<int, int>> v(N+1); // <weight, value>
-    for(int i=1; i<=N; i++)
-        cin >> v[i].first >> v[i].second;
-
-    dp.resize(N+1, vector<int>(M+1));
-
-    for(int i=1; i<=N; i++)
-        for(int j=1; j<=M; j++) {
-            dp[i][j] = dp[i-1][j];
-            if(v[i].first <= j)
-                dp[i][j] = max(dp[i][j], dp[i-1][j - v[i].first] + v[i].second);
-        }
-
-    cout << dp[N][M] << "\n";
-
-}
-
 int32_t main(){
     fastio;
-    Sol();
+    int n,m; sf2(n, m);
+    vi w(n),v(n),d(m + 1);
+    for(int i = 0; i < n; i++) sf2(w[i], v[i]);
+    for(int i = 0; i < n; i++){
+        for(int j = m; j >= w[i]; j--) d[j] = max<int>(d[j], d[j - w[i]] + v[i]);
+    }
+    pf1l(d[m]);
     return 0;
 }
