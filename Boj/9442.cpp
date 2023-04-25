@@ -96,37 +96,23 @@ const int MOD = 1e9 + 7;
 const double EPS = 1e-10;
 const int INF = 0x7f7f7f7f;
 
-string v[30];
+string s;
 
 int32_t main(){
     fastio;
     int n,tc = 1;
     while(sf1(n) and n){
         cout << "year " << tc << "\n";
-        string s; sf1(s);
-        for(int i = 0; i < n; i++){
-            sf1(v[i]);
-            for(int j = 0; j < v[i].size(); j++){
-                for(int k = 0; k < 26; k++){
-                    if(v[i][j] == s[k]){
-                        v[i][j] = k + 'A';
-                        break;
-                    }
-                }
+        sf1(s);
+        vector<string> v(n);
+        read(v);
+        sort(all(v), [&](string& a, string& b){
+            for(int i = 0; i < min<int>(a.size(), b.size()); i++){
+                if(a[i] != b[i]) return s.find(a[i]) < s.find(b[i]);
             }
-        }
-        sort(v, v + n);
-        for(int i = 0; i < n; i++){
-            for(int j = 0; j < v[i].size(); j++){
-                for(int k = 0; k < 26; k++){
-                    if(v[i][j] - 'A' == k){
-                        v[i][j] = s[k];
-                        break;
-                    }
-                }
-            }
-            pf1l(v[i]);
-        }
+            return a.size() < b.size();
+        });
+        for(auto& i : v) pf1l(i);
         tc++;
     }   
     return 0;
