@@ -1,0 +1,88 @@
+section .data
+  art1 db '####################', 10
+  art1size equ $ - art1
+  art2 db '##J1############J1##', 10
+  art2size equ $ -art2
+  art3 db '#########J1#########', 10
+  art3size equ $ -art3
+  art4 db '##J1############J1##', 10
+  art4size equ $ -art4
+  art5 db '#########J1#########', 10
+  art5size equ $ -art5
+  art6 db '#########J1#########', 10
+  art6size equ $ -art6
+  art7 db '##J1############J1##', 10
+  art7size equ $ -art7
+  art8 db '#########J1#########', 10
+  art8size equ $ -art8
+  art9 db '##J1############J1##', 10
+  art9size equ $ -art9
+  art10 db '####################', 10
+  art10size equ $ -art10
+
+section .text
+    global main
+
+main:
+	mov eax, 4
+  mov ebx, 1
+  mov ecx, art1
+  mov edx, art1size
+  int 80h
+
+	mov eax, 4
+  mov ebx, 1
+  mov ecx, art2
+  mov edx, art2size
+  int 80h
+
+  mov eax, 4
+  mov ebx, 1
+  mov ecx, art3
+  mov edx, art3size
+  int 80h
+
+  mov eax, 4
+  mov ebx, 1
+  mov ecx, art4
+  mov edx, art4size
+  int 80h
+
+  mov eax, 4
+  mov ebx, 1
+  mov ecx, art5
+  mov edx, art5size
+  int 80h
+
+  mov eax, 4
+  mov ebx, 1
+  mov ecx, art6
+  mov edx, art6size
+  int 80h
+
+  mov eax, 4
+  mov ebx, 1
+  mov ecx, art7
+  mov edx, art7size
+  int 80h
+
+  mov eax, 4
+  mov ebx, 1
+  mov ecx, art8
+  mov edx, art8size
+  int 80h
+
+  mov eax, 4
+  mov ebx, 1
+  mov ecx, art9
+  mov edx, art9size
+  int 80h
+
+  mov eax, 4
+  mov ebx, 1
+  mov ecx, art10
+  mov edx, art10size
+  int 80h
+
+   mov eax, 0
+   ret
