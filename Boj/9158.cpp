@@ -13,12 +13,16 @@ using namespace __gnu_pbds;
 
 using td3 = tuple<double, double, double>;
 
-int32_t main(){
-    ios::sync_with_stdio(0), cin.tie(0), cout.tie(0);
-    int n;
-	while(cin >> n and n){
-		vector<td3> v(n);
+/* 
+return raius Encolsing_Sphere using 경사 하강법
+*/
+
+namespace Cover3D{
+	using td3 = tuple<double, double, double>;
+	double EnclosingSphere(vector<td3>& v){
+		const int n = v.size();
 		double x = 0, y = 0, z = 0;
+		// Input
 		for (int i = 0; i < n; i++) {
 			double a, b, c; cin >> a >> b >> c;
 			x += a, y += b, z += c;
@@ -43,7 +47,17 @@ int32_t main(){
 			z += (c - z) * ratio;
 			ratio *= 0.999;
 		}
-		cout << fixed << setprecision(5) << sqrt(ret) << '\n';
+		return sqrt(ret);
+	}
+};
+
+int32_t main(){
+    ios::sync_with_stdio(0), cin.tie(0), cout.tie(0);
+    int n;
+	while(cin >> n and n){
+		vector<td3> v(n);
+		auto ret = Cover3D::EnclosingSphere(v);
+		cout << fixed << setprecision(5) << ret << "\n";
 	}
     return 0;
 }
