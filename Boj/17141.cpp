@@ -148,6 +148,7 @@ int32_t main(){
             sf1(board[i][j]);
             if(board[i][j] == 2){
                 virus.push_back({i, j});
+                board[i][j] = 0;
             }
         }
     }
