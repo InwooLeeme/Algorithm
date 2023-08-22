@@ -31,7 +31,8 @@ void Slide(int dir){
             if(!board2[i][j]) continue;
             if(merged[idx] == 0) merged[idx] = board2[i][j];
             else if(merged[idx] == board2[i][j]) merged[idx++] <<= 1;
-            else merged[++idx] = board2[i][j];            
+            else merged[++idx] = board2[i][j];
+            
         }
         for(int j = 0; j < n; j++) board2[i][j] = merged[j];
     }
