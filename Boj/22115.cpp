@@ -13,25 +13,19 @@ using namespace __gnu_pbds;
 
 const int PRECISION = 0;
 
-int D[111][111'111];
+int D[111'111];
 int w[111];
 
 void Main(){
     int n,m; cin >> n >> m;
-    if(!m){
-        cout << 0 << "\n"
-        return 0;
-    }
     constexpr int INF = int(1e18);
     for(int i = 1; i <= n; i++) cin >> w[i];
-    for(int i = 0; i <= m; i++) D[0][i] = INF;
+    for(int i = 0; i < 111'111; i++) D[i] = INF; // i만큼의 카페인을 마실 수 있을 때 필요한 커피의 최소개수
+    D[0] = 0;
     for(int i = 1; i <= n; i++){
-        for(int j = 1; j <= m; j++){
-            if(j - w[i] >= 0) D[i][j] = min<int>(D[i - 1][j], D[i - 1][j - w[i]] + 1);
-            else D[i][j] = D[i - 1][j];
-        }
+        for(int j = m; j >= w[i]; j--) D[j] = min<int>(D[j], D[j - w[i]] + 1);
     }
-    cout << (D[n][m] == INF ? -1 : D[n][m]) << "\n";
+    cout << (D[m] == INF ? -1 : D[m]) << "\n";
 }
 
 int32_t main(){
