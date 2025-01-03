@@ -1,0 +1,149 @@
+#pragma GCC target("sse,sse2,sse3,ssse3,sse4,avx,avx2")
+#pragma GCC optimize("Ofast")
+#pragma GCC optimize("unroll-loops")
+#include <bits/stdc++.h>
+#include <ext/rope>
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace std;
+using namespace __gnu_cxx;
+using namespace __gnu_pbds;
+
+#define int int_fast64_t
+#define all(v) v.begin(), v.end()
+#define rall(v) v.rbegin(), v.rend()
+#define fi first
+#define se second
+#define pb push_back
+#define SZ(x) (int)x.size()
+template<typename T>
+void printv(vector<T> v) {for (auto e : v) { cout << e << " "; }  cout << "\n";} 
+template<typename T>
+void printvv(vector<T> vv) {for (int i=0; i<vv.size(); i++) {cout << i << ": "; for (auto e : vv[i]) {cout << e << " ";}cout << "\n";}}
+template<typename T>
+void ri(T &x) {cin >> x;}
+template<typename T, typename... Args>
+void ri(T &x, Args&... args) { ri(x);ri(args...) ;}
+template<typename T>
+void ri(vector<T> &v) {for (auto &x : v) {cin >> x;}}
+template<typename T, typename... Args>
+void ri(vector<T> &v, Args&... args) {ri(v);ri(args...);}
+template<typename T>
+void po(T x) {cout << x << "\n";}
+template<typename T, typename... Args>
+void po(T x, Args... args) {cout << x << " ";po(args...) ;}
+template<typename T>
+void po(vector<T> &a) {
+for (int i=0; i<(int)a.size(); i++) {
+if (i <(int)a.size()-1) {
+cout << a[i] << " ";}
+else cout << a[i] << "\n";
+}
+}
+
+void __print(int x) {cerr << x;}
+void __print(signed x) {cerr << x;}
+void __print(unsigned x) {cerr << x;}
+void __print(unsigned long x) {cerr << x;}
+void __print(unsigned long long x) {cerr << x;}
+void __print(float x) {cerr << x;}
+void __print(double x) {cerr << x;}
+void __print(long double x) {cerr << x;}
+void __print(char x) {cerr << '\'' << x << '\'';}
+void __print(const char *x) {cerr << '\"' << x << '\"';}
+void __print(const string &x) {cerr << '\"' << x << '\"';}
+void __print(bool x) {cerr << (x ? "true" : "false");}
+
+template<typename T, typename V>
+void __print(const pair<T, V> &x) {cerr << '{'; __print(x.first); cerr << ','; __print(x.second); cerr << '}';}
+template<typename T1, typename T2, typename T3>
+void __print(const tuple<T1, T2, T3> &x) {cerr << '{'; __print(get<0>(x)); cerr << ','; __print(get<1>(x)); cerr << ','; __print(get<2>(x)); cerr << '}';}
+template<typename T1, typename T2, typename T3, typename T4>
+void __print(const tuple<T1, T2, T3, T4> &x) {cerr << '{'; __print(get<0>(x)); cerr << ','; __print(get<1>(x)); cerr << ','; __print(get<2>(x)); cerr << ','; __print(get<3>(x)); cerr << '}';}
+template<typename T>
+void __print(const T &x) {int f = 0; cerr << '{'; for (auto &i: x) cerr << (f++ ? "," : ""), __print(i); cerr << "}";}
+template<typename T1, typename T2>
+void __print(map<T1,T2> &mp) {for (auto [k,v] : mp) {cerr << '{'; __print(k); cerr << ':'; __print(v); cerr << '}';}}
+void _print() {cerr << "]\n";}
+template <typename T, typename... V>
+void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v...);}
+#ifndef ONLINE_JUDGE
+#define debug(x...) cerr << "[" << #x << "] = ["; _print(x)
+#else
+#define debug(x...)
+#endif
+
+const int PRECISION = 0;
+const int dx[4] = {0, 1, 0, -1}, dy[4] = {-1, 0, 1, 0};
+const int ddx[8] = {0, 1, 1, 1, 0, -1, -1, -1}, ddy[8] = {-1, -1, 0, 1, 1, 1, 0, -1};
+const int nx[8] = {1, 2, 2, 1, -1, -2, -2, -1}, ny[8] = {-2, -1, 1, 2, 2, 1, -1, -2};
+
+int N, M;
+using p = pair<char, int>;
+using vi = vector<int>;
+
+p board[2020][2020];
+int match[1010], par[1010];
+vi G[1010];
+
+void add_edge(int a, int b){ G[a].pb(b); }
+
+void I(){
+    memset(par, -1, sizeof(par));
+    fill(match, match + 1010, 0);
+    for(int i = 0; i < 1010; i++) G[i].clear();
+    for(int i = 0; i < 2020; i++) for(int j = 0; j < 2020; j++) board[i][j] = {'.', -1};
+}
+
+int DFS(int cur){
+    for(const auto& nxt : G[cur]){
+        if(match[nxt]) continue;
+        match[nxt] = 1;
+        if(par[nxt] == -1 or DFS(par[nxt])){
+            par[nxt] = cur;
+            return 1;
+        }
+    }
+    return 0;
+}
+
+void Sol(){
+    I();
+    ri(N, M);
+    for(int i = 0; i < N; i++){
+        int a,b; string s; ri(a, b, s); swap(a, b);
+        int n = SZ(s);
+        for(int j = 0; j < n; j++){
+            board[a][b + j] = {s[j], i};
+        }
+    }
+    for(int i = 0; i < M; i++){
+        int a,b; string s; ri(a, b, s); swap(a, b);
+        int m = SZ(s);
+        for(int j = 0; j < m; j++){
+            auto x = a + j, y = b;
+            if(board[x][y].se != -1){
+                if(board[x][y].fi != s[j]){
+                    add_edge(board[x][y].se, i);
+                }
+            }
+        }
+    }
+    int ret = 0;
+    for(int i = 0; i < N; i++){
+        fill(match, match + 1010, 0);
+        ret += DFS(i);
+    }
+    po(N + M - ret);
+}
+
+void Main(){
+    int t; ri(t); while(t--) Sol();
+}   
+
+int32_t main(){
+    ios::sync_with_stdio(0), cin.tie(0), cout.tie(0);
+    cout.setf(ios::fixed); cout.precision(PRECISION);
+    Main();
+    return 0;
+}
