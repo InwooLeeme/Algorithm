@@ -98,75 +98,76 @@ using p = pair<int, int>;
 using ti3 = tuple<int, int, int>;
 using vp = vector<p>;
 
-struct SCC{
-    int scc_cnt, dfs_cnt,N;
-    vvi G;
-    vector<int> scc, dfs_order;
-    stack<int> S;
+int m,n, N;
+int scc_cnt, dfs_cnt;
+vvi G;
+vector<int> scc, dfs_order;
+stack<int> S;
 
-    SCC(int n = 0) :
-		N(n), dfs_order(n + 1),
-		G(n + 1), scc(n + 1),
-		scc_cnt(0), dfs_cnt(0) {}
+void AddEdge(int a, int b) { G[a].push_back(b); }
 
-    void AddEdge(int a, int b) { G[a].push_back(b); }
+int DFS(int cur) {
+	int ret = dfs_order[cur] = ++dfs_cnt; S.push(cur);
+	for (const auto& nxt : G[cur]) {
+		if (!dfs_order[nxt]) ret = min(ret, DFS(nxt));
+		else if (!scc[nxt]) ret = min(ret, dfs_order[nxt]);
+	}
+	if (ret == dfs_order[cur]) {
+		for (scc_cnt++; S.size();) {
+			int t = S.top(); S.pop();
+			scc[t] = scc_cnt;
+			if (t == cur) break;
+		}
+	}
+	return ret;
+}
 
-    int DFS(int cur) {
-    	int ret = dfs_order[cur] = ++dfs_cnt; S.push(cur);
-    	for (const auto& nxt : G[cur]) {
-    		if (!dfs_order[nxt]) ret = min(ret, DFS(nxt));
-    		else if (!scc[nxt]) ret = min(ret, dfs_order[nxt]);
-    	}
-    	if (ret == dfs_order[cur]) {
-    		for (scc_cnt++; S.size();) {
-    			int t = S.top(); S.pop();
-    			scc[t] = scc_cnt;
-    			if (t == cur) break;
-    		}
-    	}
-    	return ret;
-    }
+void GetSCC() {
+	for (int i = 1; i <= N; i++)
+		if (!dfs_order[i]) DFS(i);
+}
 
-    void GetSCC() {
-    	for (int i = 1; i <= N; i++)
-    		if (!dfs_order[i]) DFS(i);
-    }
-};
+bool Bound(int x, int y){ return x < 0 or x >= n or y < 0 or y >= m; }
 
-void Sol(){
-    int n,m; ri(n, m);
-    vvi v(n, vi(m)); for(auto& i : v) ri(i);
-    int N = n*m;
-    auto Bound = [&](int x, int y) -> bool{return x < 0 or x >= n or y < 0 or y >= m;};
-    auto Conv = [&](int x, int y) -> int{ return x * m + y + 1; };
-    SCC scc(N + 1);
+int Conv(int x, int y){ return x * m + y + 1; }
+
+auto Sol = [](){
+    ri(n, m);
+    vvi v(n, vi(m));
+    for(int i = 0; i < n; i++) for(int j = 0; j < m; j++) ri(v[i][j]);
+    N = n*m;
+    scc_cnt = dfs_cnt = 0;
+    scc.clear(); dfs_order.clear();
+    G.clear();
+    G.resize(N + 1); scc.resize(N + 1);
+    dfs_order.resize(N + 1);
     for(int x = 0; x < n; x++) for(int y = 0; y < m; y++){
         for(int d = 0; d < 4; d++){
             auto nx = x + dx[d], ny = y + dy[d];
             if(Bound(nx, ny)) continue;
-            if(v[nx][ny] <= v[x][y]) scc.AddEdge(Conv(x, y), Conv(nx, ny));  
+            if(v[nx][ny] <= v[x][y]) AddEdge(Conv(x, y), Conv(nx, ny));  
         }
     }
-    scc.GetSCC();
-    if(scc.scc_cnt == 1){
+    GetSCC();
+    if(scc_cnt == 1){
         po(0);
         return;
     }
     vi indegree(N + 1), outdegree(N + 1);
     for(int i = 1; i <= N; i++){
-        for(const auto& nxt : scc.G[i]){
-            if(scc.scc[i] == scc.scc[nxt]) continue;
-            indegree[scc.scc[nxt]]++;
-            outdegree[scc.scc[i]]++;
+        for(const auto& nxt : G[i]){
+            if(scc[i] == scc[nxt]) continue;
+            indegree[scc[nxt]]++;
+            outdegree[scc[i]]++;
         }
     }
     int I = 0,O = 0;
-    for(int i = 1; i <= scc.scc_cnt; i++){
+    for(int i = 1; i <= scc_cnt; i++){
         I += (indegree[i] == 0);
         O += (outdegree[i] == 0);
     }
     po(max<int>(I, O));
-}
+};
 
 void Main(){
     int t; ri(t); while(t--) Sol();
